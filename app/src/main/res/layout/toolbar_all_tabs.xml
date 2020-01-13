@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+
+    <ImageView
+        android:id="@+id/back_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="Learn"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
+
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="17dp"
+            android:src="@drawable/ic_search" />
+
+        <ImageView
+            android:id="@+id/circle"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="17dp"
+            android:src="@drawable/ic_camera"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+
+</androidx.appcompat.widget.Toolbar>

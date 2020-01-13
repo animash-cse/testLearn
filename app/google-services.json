@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "997554838561",
+    "firebase_url": "https://bankitjobs-c98d3.firebaseio.com",
+    "project_id": "bankitjobs-c98d3",
+    "storage_bucket": "bankitjobs-c98d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997554838561:android:284ace8b6ac4b9caf21760",
+        "android_client_info": {
+          "package_name": "com.bank.it.jobs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997554838561-cnlh0scll5chl3t6bplbei36hedcdr4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bank.it.jobs",
+            "certificate_hash": "0f498b3d9522f82268748622bd70f1f57de20062"
+          }
+        },
+        {
+          "client_id": "997554838561-c207gjt6inkcd25mp2r10roabahibh9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATEm22FxKn-kOr849P8AlDtkpY-BH6FtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997554838561-c207gjt6inkcd25mp2r10roabahibh9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997554838561:android:12f4582832072019",
+        "android_client_info": {
+          "package_name": "com.example.aws.blogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997554838561-bcuaeputqcb1dpjh4j2da9uhfkaummnl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aws.blogapp",
+            "certificate_hash": "0f498b3d9522f82268748622bd70f1f57de20062"
+          }
+        },
+        {
+          "client_id": "997554838561-c207gjt6inkcd25mp2r10roabahibh9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATEm22FxKn-kOr849P8AlDtkpY-BH6FtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997554838561-c207gjt6inkcd25mp2r10roabahibh9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
