@@ -8,6 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +29,9 @@ import android.widget.Toast;
 
 import com.bank.it.jobs.Adapters.PagerAdapterAllTabs;
 import com.bank.it.jobs.Adapters.PostDetailsAdapter;
+import com.bank.it.jobs.Fragments.CommentFragment;
+import com.bank.it.jobs.Fragments.DatabaseFragment;
+import com.bank.it.jobs.Models.Post;
 import com.bumptech.glide.Glide;
 import com.bank.it.jobs.Adapters.CommentAdapter;
 import com.bank.it.jobs.Models.Comment;
@@ -62,14 +68,15 @@ public class PostDetailActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
-    RecyclerView RvComment;
+   // RecyclerView RvComment;
     CommentAdapter commentAdapter;
     List<Comment> listComment;
     static String COMMENT_KEY = "Comment" ;
 
-    private TabLayout tabLayout;
-    private int tab_value;
-
+    FragmentManager manager = getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = manager.beginTransaction();
+    CommentFragment commentFragment = new CommentFragment();
+    Button comment, modify, note;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +84,45 @@ public class PostDetailActivity extends AppCompatActivity {
         // let's set the statue bar to transparent
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getSupportActionBar().hide();
 
 
-        tabView();
+        comment = findViewById(R.id.comment_button);
+        modify = findViewById(R.id.modify_button);
+        note = findViewById(R.id.notes_button);
+        // ini Views
+       // RvComment = findViewById(R.id.rv_comment);
+        imgUserPost = findViewById(R.id.post_detail_user_img);
+        //imgCurrentUser = findViewById(R.id.post_detail_currentuser_img);
+
+        txtPostTitle = findViewById(R.id.post_detail_title);
+        txtPostDesc = findViewById(R.id.post_detail_desc);
+        txtPostDateName = findViewById(R.id.post_detail_date_name);
+
+        //editTextComment = findViewById(R.id.post_detail_comment);
+        //btnAddComment = findViewById(R.id.post_detail_add_comment_btn);
+        soundButton = findViewById(R.id.sound);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        String postTitle = getIntent().getExtras().getString("question");
+        txtPostTitle.setText(postTitle);
+
+        String userpostImage = getIntent().getExtras().getString("userPhoto");
+        Glide.with(this).load(userpostImage).into(imgUserPost);
+
+        String postDescription = getIntent().getExtras().getString("answer");
+        txtPostDesc.setText(postDescription);
+
+        // setcomment user image
+       // Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
+        // get post id
+        PostKey = getIntent().getExtras().getString("postKey");
+
+        String date = timestampToString(getIntent().getExtras().getLong("postDate"));
+        txtPostDateName.setText(date);
+
         // Initialize Mobile Ads SDK
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -91,27 +133,9 @@ public class PostDetailActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        // ini Views
-        RvComment = findViewById(R.id.rv_comment);
-        imgUserPost = findViewById(R.id.post_detail_user_img);
-        imgCurrentUser = findViewById(R.id.post_detail_currentuser_img);
-
-        txtPostTitle = findViewById(R.id.post_detail_title);
-        txtPostDesc = findViewById(R.id.post_detail_desc);
-        txtPostDateName = findViewById(R.id.post_detail_date_name);
-
-        editTextComment = findViewById(R.id.post_detail_comment);
-        btnAddComment = findViewById(R.id.post_detail_add_comment_btn);
-        soundButton = findViewById(R.id.sound);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-
-
         // add Comment button click listner
 
-        btnAddComment.setOnClickListener(new View.OnClickListener() {
+       /* btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -137,36 +161,30 @@ public class PostDetailActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        });*/
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-
-        String postTitle = getIntent().getExtras().getString("question");
-        txtPostTitle.setText(postTitle);
-
-        String userpostImage = getIntent().getExtras().getString("userPhoto");
-        Glide.with(this).load(userpostImage).into(imgUserPost);
-
-        String postDescription = getIntent().getExtras().getString("answer");
-        txtPostDesc.setText(postDescription);
-
-        // setcomment user image
-        Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
-        // get post id
-        PostKey = getIntent().getExtras().getString("postKey");
-
-        String date = timestampToString(getIntent().getExtras().getLong("postDate"));
-        txtPostDateName.setText(date);
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle post = new Bundle();
+                post.putString("postKey", PostKey);
+                commentFragment.setArguments(post);
+                fragmentTransaction.replace(R.id.freamLayout,commentFragment);
+                fragmentTransaction.commit();
+                comment.setEnabled(false);
+            }
+        });
 
         // ini Recyclerview Comment
-        iniRvComment();
+        //iniRvComment();
     }
 
-    private void iniRvComment() {
+   /* private void iniRvComment() {
 
         RvComment.setLayoutManager(new LinearLayoutManager(this));
 
@@ -190,7 +208,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     private void showMessage(String message) {
 
@@ -208,53 +226,4 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
 
-    private void tabView(){
-        Intent intent = getIntent();
-        tab_value = intent.getIntExtra("layout", 0);
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            // Navigation bar the soft bottom of some phones like nexus and some Samsung note series
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.black));
-            //status bar or the time bar at the top
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
-        }
-
-
-        tabLayout = findViewById(R.id.post_tab_layout);
-
-
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-
-        tabLayout.addTab(tabLayout.newTab().setText("Modify"));
-        tabLayout.addTab(tabLayout.newTab().setText("Notes"));
-        tabLayout.addTab(tabLayout.newTab().setText("Comments"));
-
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final ViewPager viewPager1 = findViewById(R.id.pager);
-        PostDetailsAdapter adapter = new PostDetailsAdapter(getSupportFragmentManager(), 3);
-        viewPager1.setAdapter(adapter);
-        viewPager1.setOffscreenPageLimit(1);
-        viewPager1.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        
-        if (tab_value >= 0) {
-            tabLayout.setScrollPosition(tab_value, 0f, true);
-            viewPager1.setCurrentItem(tab_value);
-        }
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager1.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-    }
 }

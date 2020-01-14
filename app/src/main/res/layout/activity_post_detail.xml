@@ -190,13 +190,47 @@
                         android:src="@drawable/ic_save"/>
 
                 </LinearLayout>
-
                 <LinearLayout
+                    android:id="@+id/fragment_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_actions">
+                    <Button
+                        android:id="@+id/comment_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Comments"/>
+                    <Button
+                        android:id="@+id/modify_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Modify"/>
+                    <Button
+                        android:id="@+id/notes_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Notes"/>
+                </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/freamLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_button">
+
+                </FrameLayout>
+
+               <!-- <LinearLayout
                     android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_actions"
+                    app:layout_constraintTop_toBottomOf="@+id/freamLayout"
                     android:layout_margin="5dp"
                     android:background="@drawable/round"
                     android:orientation="horizontal">
@@ -251,36 +285,9 @@
                         app:layout_constraintStart_toEndOf="@+id/post_detail_comment"
                         app:layout_constraintTop_toTopOf="@+id/post_detail_comment"
                         app:layout_constraintVertical_bias="0.0" />
-                </LinearLayout>
+                </LinearLayout>-->
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/post_tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/white"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="3dp"
-                    app:tabMode="fixed"
-                    android:clipToPadding="false"
-                    android:paddingLeft="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/comment"
-                    app:tabSelectedTextColor="@color/colorPrimaryDark"
-                    app:tabTextColor="@color/grayDark"
-                    android:paddingStart="30dp" />
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/post_tab_layout">
-
-                </androidx.viewpager.widget.ViewPager>
-
-                <androidx.recyclerview.widget.RecyclerView
+                <!--<androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_comment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -288,7 +295,7 @@
                     android:background="@drawable/round"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pager" />
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_button" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

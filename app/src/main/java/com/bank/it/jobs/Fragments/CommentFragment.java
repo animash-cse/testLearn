@@ -3,20 +3,35 @@ package com.bank.it.jobs.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bank.it.jobs.Adapters.CommentAdapter;
 import com.bank.it.jobs.Adapters.PostAdapter;
+import com.bank.it.jobs.Adapters.PostDetailsAdapter;
+import com.bank.it.jobs.Models.Comment;
 import com.bank.it.jobs.Models.Post;
 import com.bank.it.jobs.R;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -40,6 +55,17 @@ public class CommentFragment extends Fragment {
     RecyclerView postRecyclerView;
     PostAdapter postAdapter;
     List<Post> postList;
+    RecyclerView RvComment;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    FirebaseDatabase firebaseDatabase;
+    static String COMMENT_KEY = "Comment" ;
+    List<Comment> listComment;
+    CommentAdapter commentAdapter;
+    PostDetailsAdapter postDetailsAdapter;
+    EditText editTextComment;
+    ImageButton btnAddComment;
+    ImageView imgCurrentUser;
 
 
     public CommentFragment() {
@@ -69,11 +95,81 @@ public class CommentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_database, container, false);
-        postRecyclerView = fragmentView.findViewById(R.id.postRV);
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        postRecyclerView.setHasFixedSize(true);
+        View fragmentView = inflater.inflate(R.layout.fragment_comment, container, false);
+
+        Bundle bundle = getArguments();
+        final String postKey = bundle.getString("postKey");
+
+        imgCurrentUser = fragmentView.findViewById(R.id.post_detail_currentuser_img);
+        editTextComment = fragmentView.findViewById(R.id.post_detail_comment);
+        btnAddComment = fragmentView.findViewById(R.id.post_detail_add_comment_btn);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        // setcomment user image
+        Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
+        btnAddComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                btnAddComment.setVisibility(View.INVISIBLE);
+                DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(postKey).push();
+                String comment_content = editTextComment.getText().toString();
+                String uid = firebaseUser.getUid();
+                String uname = firebaseUser.getDisplayName();
+                String uimg = firebaseUser.getPhotoUrl().toString();
+                Comment comment = new Comment(comment_content,uid,uimg,uname);
+
+                commentReference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showMessage("comment added");
+                        editTextComment.setText("");
+                        btnAddComment.setVisibility(View.VISIBLE);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showMessage("fail to add comment : "+e.getMessage());
+                    }
+                });
+            }
+        });
+
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        RvComment = fragmentView.findViewById(R.id.commentRV);
+
+        RvComment.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RvComment.setHasFixedSize(true);
+
+        DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(postKey);
+        commentRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listComment = new ArrayList<>();
+                for (DataSnapshot snap:dataSnapshot.getChildren()) {
+
+                    Comment comment = snap.getValue(Comment.class);
+                    listComment.add(comment) ;
+
+                }
+                commentAdapter = new CommentAdapter(getActivity(),listComment);
+                RvComment.setAdapter(commentAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         return fragmentView;
+
     }
 
 
@@ -81,7 +177,8 @@ public class CommentFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Get List Posts from the database
+
+        /*// Get List Posts from the database
         Query query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("category")
                 .startAt("Database")
                 .endAt("Database");
@@ -107,7 +204,7 @@ public class CommentFragment extends Fragment {
 
             }
         });
-
+*/
 
     }
 
@@ -131,5 +228,11 @@ public class CommentFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void showMessage(String message) {
+
+        Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+
     }
 }

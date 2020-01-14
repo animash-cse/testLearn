@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bank.it.jobs.Fragments.DatabaseFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <LinearLayout
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/post_detail_currentuser_img"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/profile"
+                    />
+
+                <EditText
+                    android:id="@+id/post_detail_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/round"
+                    android:ems="10"
+                    android:hint="Write a Comment..."
+                    android:inputType="textMultiLine"
+                    />
+
+                <ImageButton
+                    android:id="@+id/post_detail_add_comment_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/ic_add_circle" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

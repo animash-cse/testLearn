@@ -5,11 +5,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.bank.it.jobs.Fragments.ByOthersFragment;
+import com.bank.it.jobs.Fragments.CommentFragment;
 import com.bank.it.jobs.Fragments.DatabaseFragment;
 import com.bank.it.jobs.Fragments.HomeFragment;
 import com.bank.it.jobs.Fragments.ProfileFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PostDetailsAdapter extends FragmentPagerAdapter {
+
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
 
     private int mNoOfTabs;
     public PostDetailsAdapter(FragmentManager fm, int NumberOfTabs) {
@@ -22,7 +29,7 @@ public class PostDetailsAdapter extends FragmentPagerAdapter {
         switch (position) {
 
             case 0:
-                return new ByOthersFragment();
+                return new CommentFragment();
             case 1:
                 return new DatabaseFragment();
             case 2:
